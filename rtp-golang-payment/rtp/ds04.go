@@ -1,0 +1,23 @@
+package rtp
+
+var listOfDS04ValidTransactionStatus = []string{
+	StatusRejected,
+}
+
+var listOfDS04ValidNegativeTransactionReasons = []string{
+	RejectReasonInvalidDebtorAccountNumber,
+	RejectReasonNotAllowedCurrency,
+	RejectReasonDuplication,
+	RejectReasonAttachmentsNotSupported,
+	RejectReasonInvalidDebtorIdentificationCode,
+	RejectReasonExpiryDateTooLong,
+	RejectReasonExpiryDateTimeReached,
+	RejectReasonInvalidFileFormat,
+	RejectReasonFraudulentOrigin,
+	RejectReasonNotSpecifiedReasonAgentGenerated,
+	RejectReasonPayerOrPayerRTPSPNotReachable,
+	RejectReasonTypeOfPaymentInstrumentNotSupported,
+	RejectReasonRegulatoryReason,
+	RejectReasonRTPNotSupportedForDebtor,
+	RejectReasonRTPServiceProviderIdentifierIncorrect,
+}

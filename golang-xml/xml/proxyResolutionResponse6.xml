@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- prxy.004 - alias resolution response -->
+<ns:BusMsg xmlns:ns="urn:iso" xmlns:ns1="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" xmlns:ns2="urn:iso:std:iso:20022:tech:xsd:prxy.004.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso ../../../xsd/phase1/MainCIHub.xsd ">
+   <ns:AppHdr>
+      <ns1:Fr>
+         <ns1:FIId>
+            <ns1:FinInstnId>
+               <ns1:Othr>
+                  <ns1:Id>NOBUBANK</ns1:Id>
+               </ns1:Othr>
+            </ns1:FinInstnId>
+         </ns1:FIId>
+      </ns1:Fr>
+      <ns1:To>
+         <ns1:FIId>
+            <ns1:FinInstnId>
+               <ns1:Othr>
+                  <ns1:Id>FASTIDJA</ns1:Id>
+               </ns1:Othr>
+            </ns1:FinInstnId>
+         </ns1:FIId>
+      </ns1:To>
+      <ns1:BizMsgIdr>20210301INDOIDJA610ORB12345678</ns1:BizMsgIdr>
+      <ns1:MsgDefIdr>prxy.004.001.01</ns1:MsgDefIdr>
+      <ns1:CreDt>2021-03-01T12:00:00Z</ns1:CreDt>
+   </ns:AppHdr>
+   <ns:Document>
+      <ns:PrxyLookUpRspn>
+         <ns2:GrpHdr>
+            <ns2:MsgId>20210301INDOIDJA61012345678</ns2:MsgId>
+            <ns2:CreDtTm>2021-03-01T19:00:00.000</ns2:CreDtTm>
+            <ns2:MsgRcpt>
+               <ns2:Agt>
+                  <ns2:FinInstnId>
+                     <ns2:Othr>
+                        <ns2:Id>INDOIDJA</ns2:Id>
+                     </ns2:Othr>
+                  </ns2:FinInstnId>
+               </ns2:Agt>
+            </ns2:MsgRcpt>
+         </ns2:GrpHdr>
+         <ns2:OrgnlGrpInf>
+            <ns2:OrgnlMsgId>20210301INDOIDJA61012345678</ns2:OrgnlMsgId>
+            <!-- MsgId from request -->
+            <ns2:OrgnlMsgNmId>prxy.003.001.01</ns2:OrgnlMsgNmId>
+            <ns2:OrgnlCreDtTm>2021-03-01T19:00:00.000</ns2:OrgnlCreDtTm>
+         </ns2:OrgnlGrpInf>
+         <ns2:LkUpRspn>
+            <ns2:OrgnlId>20210326INDOIDJAO12345678</ns2:OrgnlId>
+            <!-- from the PrxyOnly/Id in prxy.003 -->
+            <ns2:OrgnlPrxyRtrvl>
+               <ns2:Tp>01</ns2:Tp>
+               <ns2:Val>0211234567</ns2:Val>
+            </ns2:OrgnlPrxyRtrvl>
+            <ns2:RegnRspn>
+               <ns2:PrxRspnSts>ACTC</ns2:PrxRspnSts>
+               <ns2:StsRsnInf>
+                  <ns2:Prtry>U804</ns2:Prtry>
+               </ns2:StsRsnInf>
+               <ns2:Prxy>
+                  <ns2:Tp>01</ns2:Tp>
+                  <!-- Tp that was looked-up: Copied from prxy.003 -->
+                  <ns2:Val>0211234567</ns2:Val>
+                  <!-- Value that was looked-up from prxy.003 -->
+               </ns2:Prxy>
+               <ns2:Regn>
+                  <ns2:RegnId>0102030405060708</ns2:RegnId>
+                  <!-- registration ID of the found record -->
+                  <ns2:DsplNm>JOHN SMITH</ns2:DsplNm>
+                  <!-- account display name in the found proxy record -->
+                  <ns2:Agt>
+                     <ns2:FinInstnId>
+                        <ns2:Othr>
+                           <ns2:Id>CENAIDJA</ns2:Id>
+                           <!-- Bank ID of the found record -->
+                        </ns2:Othr>
+                     </ns2:FinInstnId>
+                  </ns2:Agt>
+                  <ns2:Acct>
+                     <ns2:Id>
+                        <ns2:Othr>
+                           <ns2:Id>03005000069295</ns2:Id>
+                           <!-- Account ID of the found record -->
+                        </ns2:Othr>
+                     </ns2:Id>
+                     <ns2:Tp>
+                        <ns2:Prtry>CACC</ns2:Prtry>
+                        <!-- Account type of the found record -->
+                     </ns2:Tp>
+                     <ns2:Nm>JOHN SMITH</ns2:Nm>
+                     <!-- the account name of the found account -->
+                  </ns2:Acct>
+               </ns2:Regn>
+            </ns2:RegnRspn>
+         </ns2:LkUpRspn>
+         <ns2:SplmtryData>
+            <ns2:Envlp>
+               <ns2:Dtl>
+                  <ns2:Cstmr>
+                     <ns2:Tp>01</ns2:Tp>
+                     <ns2:Id>0102030405060708</ns2:Id>
+                     <ns2:RsdntSts>01</ns2:RsdntSts>
+                     <ns2:TwnNm>0300</ns2:TwnNm>
+                  </ns2:Cstmr>
+               </ns2:Dtl>
+            </ns2:Envlp>
+         </ns2:SplmtryData>
+      </ns:PrxyLookUpRspn>
+   </ns:Document>
+</ns:BusMsg>

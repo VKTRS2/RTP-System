@@ -1,0 +1,37 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+{{- range getComplexTypes .PackageName}}
+{{ if ne .Name "Document" }}
+// IsValid checks if {{ .Name }} is valid
+func (s {{ .Name }}) IsValid(optional bool) bool {
+
+    valid := true
+    {{- range .Attrs}}
+        {{- if .Array}}
+           {{- if not .Optional }}
+              if len(s.{{.Name}}) == 0 {
+                 valid = false
+              }
+          {{- end }}
+          for j := 0; j < len(s.{{.Name}}); j++ {
+              valid = valid && s.{{.Name}}[j].IsValid({{.Optional}})
+          }
+        {{else}}
+{{- if .IsPtr }}
+{{- if .Optional }}
+         valid = valid && (s.{{ .Name }} == nil || (s.{{ .Name }} != nil && s.{{ .Name }}.IsValid({{.Optional}})))
+{{ else }}
+         valid = valid && s.{{ .Name }} != nil && s.{{ .Name }}.IsValid({{.Optional}})
+{{ end }}
+{{ else }}
+          valid = valid && s.{{ .Name }}.IsValid({{.Optional}})
+{{- end }}
+        {{- end}}
+    {{- end }}
+
+    return valid
+}
+{{- end}}
+{{- end}}

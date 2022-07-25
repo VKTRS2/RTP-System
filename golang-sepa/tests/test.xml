@@ -1,0 +1,64 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>MSGID</MsgId>
+      <CreDtTm>2017-06-07T14:39:33</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <CtrlSum>70000</CtrlSum>
+      <InitgPty>
+        <Nm>Emiter Name</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>MSGID</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <NbOfTxs>1</NbOfTxs>
+      <CtrlSum>70000</CtrlSum>
+      <PmtTpInf>
+        <SvcLvl>
+          <Cd>SEPA</Cd>
+        </SvcLvl>
+      </PmtTpInf>
+      <ReqdExctnDt>2017-06-09</ReqdExctnDt>
+      <Dbtr>
+        <Nm>Emiter Name</Nm>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <IBAN>FR1420041010050500013M02606</IBAN>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BIC>BKAUATWW</BIC>
+        </FinInstnId>
+      </DbtrAgt>
+      <ChrgBr>SLEV</ChrgBr>
+      <CdtTrfTxInf>
+        <PmtId>
+          <InstrId>F201705</InstrId>
+          <EndToEndId>F201705</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">70000</InstdAmt>
+        </Amt>
+        <Cdtr>
+          <Nm>DEF Electronics</Nm>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <IBAN>GB29NWBK60161331926819</IBAN>
+          </Id>
+        </CdtrAcct>
+        <RgltryRptg>
+          <Dtls>
+            <Cd>150</Cd>
+          </Dtls>
+        </RgltryRptg>
+        <RmtInf>
+          <Ustrd>F201705</Ustrd>
+        </RmtInf>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

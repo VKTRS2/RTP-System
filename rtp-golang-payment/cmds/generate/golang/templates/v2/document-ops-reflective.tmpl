@@ -1,0 +1,105 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    {{- range getComplexTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+	"errors"
+	"reflect"
+	"fmt"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
+)
+
+{{ $packageName := .PackageName }}
+
+func (d *Document) Set(path string, src interface{}) error {
+
+	v := reflect.ValueOf(d)
+
+	p, err := dotnotation.NewPath(path)
+	if err != nil {
+		return err
+	}
+	paths := []dotnotation.DotPath{p}
+
+	fields := d.mapper.TraversalsByName(v.Type(), paths)
+
+	values := make([]interface{}, 1)
+	err = fieldsByTraversal(v, fields, paths, values, true, false)
+	if err != nil {
+		return err
+	}
+
+	return copy2Dest(path, values[0], src)
+}
+
+func (d *Document) Get(path string) (interface{}, error) {
+
+	v := reflect.ValueOf(d)
+
+	p, err := dotnotation.NewPath(path)
+   	if err != nil {
+   		return nil, err
+   	}
+   	paths := []dotnotation.DotPath{p}
+
+	fields := d.mapper.TraversalsByName(v.Type(), paths)
+
+	values := make([]interface{}, 1)
+	err = fieldsByTraversal(v, fields, paths, values, true, true)
+	if err != nil {
+		return nil, err
+	}
+
+	/*
+		rv := reflect.ValueOf(values[0])
+		fmt.Println("Indirect type is:", reflect.Indirect(rv), reflect.Indirect(rv).Type(), rv.Kind(), rv.Elem(), rv.Elem().Type()) // prints main.CustomStruct
+
+		if tv, ok := values[0].(*common.Max35Text); ok {
+			return *tv, nil
+		}
+	*/
+
+	return deref(path, values[0])
+}
+
+{{ $types := typesVisit .PackageName }}
+func copy2Dest(docPath string, dest, src interface{}) error {
+
+	var err error
+	switch typedDest := dest.(type) {
+{{- range $nm, $tp := $types.Types}}
+{{- if not $tp.IsStruct }}
+  case *{{$tp.TypeWithPackageTrimmed $packageName}}:
+        if typedDest == nil {
+  			return errors.New("nil pointer... in unmarshalling {{$tp.TypeWithPackageTrimmed $packageName}} data for" + docPath)
+	    }
+
+  		*typedDest, err = {{$tp.NameOfTypeFunction "To" $packageName }}(src)
+  		return err
+{{- end }}
+{{- end }}
+   default:
+        return fmt.Errorf("could not find the type to node %s of type %v", docPath, dest)
+ }
+
+}
+
+func deref(docPath string, val interface{}) (interface{}, error) {
+
+    var err error
+	switch tv := val.(type) {
+{{- range $nm, $tp := $types.Types}}
+{{- if not $tp.IsStruct }}
+  case *{{$tp.TypeWithPackageTrimmed $packageName}}:
+        return *tv, nil
+{{- end }}
+{{- end }}
+   default:
+        err = fmt.Errorf("could not find the type to node %s of type %v", docPath, val)
+ }
+
+ return val, err
+}

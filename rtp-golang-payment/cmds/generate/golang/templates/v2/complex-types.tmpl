@@ -1,0 +1,21 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    {{- range getComplexTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+)
+
+{{ $msgName := .MsgName }}
+{{- range getComplexTypes .PackageName}}
+{{ if ne .Name "Document" }}
+// {{ .Name }} {{.Comment}}
+type {{ .Name }} struct {
+{{- range .Attrs}}
+{{ .Name }} {{ if .IsPtr }}*{{- end}}{{- if .Array }}[]{{- end}}{{.Type.Name}} `xml:"{{.XMLName}}{{.XMLTags}}"`
+{{- end}}
+}
+{{- end}}
+{{- end}}

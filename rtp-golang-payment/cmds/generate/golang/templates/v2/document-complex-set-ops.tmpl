@@ -1,0 +1,39 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    "{{ getImportForPackage "common" }}"
+)
+
+{{ $packageName := .PackageName }}
+{{ $tree := simpleVisit .PackageName }}
+
+{{- range $tree.Paths}}
+{{ $path := . }}
+{{ $lastNode := .LastItem }}
+{{ $lastNodeIndex := .LastItemIndex }}
+{{- if and (ne $lastNode.Name "_self") ($lastNode.IsStruct) }}
+func (d*Document)  Set_{{ .Identifier }}(_{{ camelize $lastNode.Name }} {{if $lastNode.IsPtr}}*{{end}}{{if $lastNode.IsArray}}[]{{end}}{{$lastNode.TypeWithPackageTrimmed $packageName}}) {
+{{- range $index, $element := .}}
+{{- if ne $element.Name "_self" }}
+{{- if ne $index $lastNodeIndex }}
+{{- if $element.IsArray }}
+if len(d.{{$path.ItemPathReference $index}}) == 0 {
+    d.{{$path.ItemPathReference $index}} = append(d.{{$path.ItemPathReference $index}}, {{$element.TypeWithPackageTrimmed $packageName}}{})
+}
+{{- end}}
+{{- if $element.IsPtr }}
+if d.{{$path.ItemPathReference $index}} == nil {
+    d.{{$path.ItemPathReference $index}} = &{{$element.TypeWithPackageTrimmed $packageName}}{}
+}
+{{- end}}
+{{- else }}
+ d.{{$path.ItemPathReference $index}} = _{{ camelize $element.Name }}
+{{- end }}
+
+{{- end }}
+{{- end }}
+}
+{{- end }}
+{{- end }}

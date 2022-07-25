@@ -1,0 +1,99 @@
+{{ define "simple-types-string-ops" }}
+{{- $typeName := .Name}}
+const (
+    {{ .Name }}Zero = ""
+    {{ .Name }}Sample = "{{ .GenerateSampleValue }}"
+{{- if .HasEnumRestriction }}
+{{- range .Restrictions.Enum }}
+   {{ $typeName }}{{ . }} = "{{ . }}"
+{{- end}}
+{{- end}}
+
+{{- if .HasLengthRestriction }}
+    {{ .Name }}Length = {{.Restrictions.Length}}
+    {{ .Name }}MinLength = {{.Restrictions.MinLength}}
+    {{ .Name }}MaxLength = {{.Restrictions.MaxLength}}
+{{- end}}
+)
+
+{{- if .HasEnumRestriction }}
+var {{ .Name }}EnumRestriction = []string{ {{ range $i, $v := .Restrictions.Enum -}}
+   {{- if $i -}}, {{- end -}} {{ $typeName }}{{ $v }} {{- end }} }
+{{ end }}
+
+{{- if .HasPatternRestriction }}
+var {{ .Name }}PatternRestriction = regexp.MustCompile(`{{.Restrictions.Pattern.String}}`)
+{{ end }}
+
+// IsValid checks if {{ .Name }} of type {{ .Type.Builtin }} is valid
+func (t {{ .Name }}) IsValid(optional bool) bool {
+
+     valid := xsdt.{{ .Type.Builtin }}(t).IsValid(optional)
+
+     if optional && t == {{ .Name }}Zero {
+     	 return valid
+     }
+
+{{- if .HasEnumRestriction }}
+     valid = valid && isEnumRestrictionValid(t.String(), {{ .Name }}EnumRestriction)
+{{ end }}
+{{- if .HasLengthRestriction }}
+     valid = valid && isLengthRestrictionValid(t.String(), {{ .Name }}Length,  {{ .Name }}MinLength, {{ .Name }}MaxLength)
+{{ end }}
+{{- if .HasPatternRestriction }}
+     valid = valid && isPatternRestrictionValid(t.String(), {{ .Name }}PatternRestriction)
+{{ end }}
+{{- if .HasDecimalRestriction }}
+     valid = valid && hasValidDecimalRestriction(t.String(), {{.Restrictions.TotalDigits}}, , {{.Restrictions.Precision}})
+{{ end }}
+     return valid
+}
+
+// String method for easy conversion
+func (t {{ .Name }}) String() string {
+    return string(t)
+}
+
+// To{{ .Name }} method for easy conversion with application of restrictions
+func To{{ .Name }}(i interface{}) ({{ .Name }}, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+
+{{- if .HasEnumRestriction }}
+     if !isEnumRestrictionValid( s, {{ .Name }}EnumRestriction) {
+        return "", fmt.Errorf("cannot satisfy enum restriction for %s of type {{ .Name }}", s)
+     }
+{{ end }}
+{{- if .HasLengthRestriction }}
+     if !isLengthRestrictionValid(s, {{ .Name }}Length,  {{ .Name }}MinLength, {{ .Name }}MaxLength) {
+       return "", fmt.Errorf("cannot satisfy length restriction for %s of type {{ .Name }}", s)
+     }
+{{ end }}
+{{- if .HasPatternRestriction }}
+      if !isPatternRestrictionValid(s, {{ .Name }}PatternRestriction)  {
+      return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type {{ .Name }}", s)
+      }
+{{ end }}
+
+    return {{ .Name }}(s), nil
+}
+
+// MustTo{{ .Name }} method for easy conversion with application of restrictions. Panics on error.
+func MustTo{{ .Name }}(s interface{}) {{ .Name }} {
+    v, err := To{{ .Name }}(s)
+    if err != nil {
+    panic(err)
+    }
+
+    return v
+}
+
+{{ end }}

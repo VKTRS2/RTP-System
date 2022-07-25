@@ -1,0 +1,170 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+	"bytes"
+	"encoding/xml"
+	"errors"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
+    "{{ getImportForPackage "common" }}"
+	"reflect"
+	"strings"
+	"sync"
+)
+
+const (
+    Iso20022MsgName = "{{.MsgName}}"
+)
+
+
+{{ $msgName := .MsgName }}
+{{- range getComplexTypes .PackageName}}
+{{ if eq .Name "Document" }}
+// {{ .Name }} {{.Comment}}
+type {{ .Name }} struct {
+   XMLName xml.Name `xml:"urn:iso:std:iso:20022:tech:xsd:{{ $msgName }} Document"`
+{{- range .Attrs}}
+{{ .Name }} {{ if .IsPtr }}*{{- end}}{{- if .Array }}[]{{- end}}{{.Type.Name}} `xml:"{{.XMLName}}{{.XMLTags}}"`
+{{- end}}
+	mapper           *common.Mapper                      `xml:"-"`
+}
+
+func NewDocument() Document {
+	d := Document{
+		mapper: mapper(),
+	}
+
+	return d
+}
+
+func (d *Document)WithMapper()  {
+
+    if d.mapper == nil {
+        d.mapper = mapper()
+    }
+
+}
+
+func (d *Document)ToXML() ([]byte, error) {
+	w := &bytes.Buffer{}
+	w.Write([]byte(xml.Header))
+
+	enc := xml.NewEncoder(w)
+	enc.Indent("", "  ")
+	err := enc.Encode(d)
+	if err != nil {
+	    return nil, err
+	}
+
+	return w.Bytes(), nil
+}
+
+func NewDocumentFromXML(b []byte) (*Document, error) {
+	d := NewDocument()
+	err := xml.Unmarshal(b, &d)
+	return &d, err
+}
+
+
+// IsValid checks if {{ .Name }} is valid
+func (d {{ .Name }}) IsValid(optional bool) bool {
+
+    valid := true
+    {{- range .Attrs}}
+        {{- if .Array}}
+           {{- if not .Optional }}
+              if len(d.{{.Name}}) == 0 {
+                 valid = false
+              }
+          {{- end }}
+          for j := 0; j < len(d.{{.Name}}); j++ {
+              valid = valid && d.{{.Name}}[j].IsValid({{.Optional}})
+          }
+        {{else}}
+{{- if .IsPtr }}
+{{- if .Optional }}
+         valid = valid && (d.{{ .Name }} == nil || (d.{{ .Name }} != nil && d.{{ .Name }}.IsValid({{.Optional}})))
+{{ else }}
+         valid = valid && d.{{ .Name }} != nil && d.{{ .Name }}.IsValid({{.Optional}})
+{{ end }}
+{{ else }}
+          valid = valid && d.{{ .Name }}.IsValid({{.Optional}})
+{{- end }}
+        {{- end}}
+    {{- end }}
+
+    return valid
+}
+{{- end}}
+{{- end}}
+
+/*
+ * Document reflection funcs
+ */
+
+// NameMapper is used to map column names to struct field names.  By default,
+// it uses strings.ToLower to lowercase struct field names.  It can be set
+// to whatever you want, but it is encouraged to be set before use
+// as name-to-field mappings are cached after first use on a type.
+var NameMapper = NameMapperFunc
+
+func NameMapperFunc(s string) string {
+	return strings.TrimPrefix(s, "urn:iso:std:iso:20022:tech:xsd:pain.013.001.07")
+}
+
+// Rather than creating on init, this is created when necessary so that
+// importers have time to customize the NameMapper.
+var mpr *common.Mapper
+
+// mprMu protects mpr.
+var mprMu sync.Mutex
+
+// mapper returns a valid mapper using the configured NameMapper func.
+func mapper() *common.Mapper {
+	mprMu.Lock()
+	defer mprMu.Unlock()
+
+	if mpr == nil {
+		mpr = common.NewMapperFunc("xml", NameMapper)
+	}
+	return mpr
+}
+
+// fieldsByName fills a values interface with fields from the passed value based
+// on the traversals in int.  If ptrs is true, return addresses instead of values.
+// We write this instead of using FieldsByName to save allocations and map lookups
+// when iterating over many rows.  Empty traversals will get an interface pointer.
+// Because of the necessity of requesting ptrs or values, it's considered a bit too
+// specialized for inclusion in reflectx itself.
+func fieldsByTraversal(v reflect.Value, traversals [][]int, paths []dotnotation.DotPath, values []interface{}, ptrs bool, readOnly bool) error {
+	v = reflect.Indirect(v)
+	if v.Kind() != reflect.Struct {
+		return errors.New("argument not a struct")
+	}
+
+	for i, traversal := range traversals {
+		if len(traversal) == 0 {
+			values[i] = new(interface{})
+			continue
+		}
+
+	    var f reflect.Value
+		var found bool
+		if readOnly {
+			f, found = common.FieldByIndexesAndPathInfoReadOnly(v, traversal, paths[i])
+			if !found {
+				return nil
+			}
+		} else {
+			f = common.FieldByIndexesAndPathInfo(v, traversal, paths[i])
+		}
+
+		if ptrs {
+			values[i] = f.Addr().Interface()
+		} else {
+			values[i] = f.Interface()
+		}
+	}
+	return nil
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ns:breakfast_menu>
+	<food>
+		<name price="10">Berry-Berry Belgian Waffles</name>
+		<description>Light Belgian waffles</description>
+		<calories>900</calories>
+	</food>
+	<food>
+		<name price="20">French Toast</name>
+		<description>Thick slices</description>
+		<calories>600</calories>
+	</food>
+	<food>
+		<name price="30">Homestyle Breakfast</name>
+		<description>Two eggs, bacon or sausage</description>
+		<calories>950</calories>
+	</food>	
+</ns:breakfast_menu>

@@ -1,0 +1,71 @@
+{{ define "simple-types-datetime-ops" }}
+
+const (
+    {{ .Name }}Sample = "Value"
+    {{ .Name }}Zero = ""
+)
+
+{{- if .HasPatternRestriction }}
+var {{ .Name }}PatternRestriction = regexp.MustCompile(`{{.Restrictions.Pattern.String}}`)
+{{ end }}
+{{- if .HasEnumRestriction }}
+var {{ .Name }}EnumRestriction = []string{ {{ range $i, $v := .Restrictions.Enum -}} {{- if $i -}}, {{- end -}} "{{ $v }}" {{- end }} }
+{{ end }}
+// IsValid checks if {{ .Name }} of type {{ .Type.Builtin }} is valid
+func (t {{ .Name }}) IsValid(optional bool) bool {
+
+     valid := xsdt.{{ .Type.Builtin }}(t).IsValid(optional)
+     if optional && t == {{ .Name }}Zero {
+       	 return valid
+     }
+
+{{- if .HasEnumRestriction }}
+     valid = valid && applyEnumRestriction(t.String(), {{ .Name }}EnumRestriction)
+{{ end }}
+{{- if .HasLengthRestriction }}
+     valid = valid && applyLengthRestriction(t.String(), {{.Restrictions.Length}}, {{.Restrictions.MinLength}}, {{.Restrictions.MaxLength}})
+{{ end }}
+{{- if .HasPatternRestriction }}
+     valid = valid && applyPatternRestriction(t.String(), {{ .Name }}PatternRestriction)
+{{ end }}
+{{- if .HasDecimalRestriction }}
+     valid = valid && applyDecimalRestriction(t.String(), {{.Restrictions.TotalDigits}}, , {{.Restrictions.Precision}})
+{{ end }}
+     return valid
+}
+
+// String method for easy conversion
+func (t {{ .Name }}) String() string {
+    return string(t)
+}
+
+// To{{ .Name }} method for easy conversion from time.Time
+func To{{ .Name }}(tm interface{}) ({{ .Name }}, error) {
+
+	switch typedTm := tm.(type) {
+	case time.Time:
+		return {{ .Name }}(typedTm.Format(time.RFC3339)), nil
+	case string:
+		return {{ .Name }}(typedTm), nil
+	case {{ .Name }}:
+        return typedTm, nil
+	}
+
+	return "", fmt.Errorf("cannot convert %v to {{ .Name }}", tm)
+}
+
+func MustTo{{ .Name }}(tm interface{}) {{ .Name }} {
+    d, err := To{{ .Name }}(tm)
+    if err != nil {
+        panic(err)
+    }
+
+    return d
+}
+
+// {{ .Name }}Example method for generation of valid sample data
+func {{ .Name }}Example() {{ .Name }} {
+    return {{ .Name }}(time.Now().Format(time.RFC3339))
+}
+
+{{ end }}

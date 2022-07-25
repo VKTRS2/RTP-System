@@ -1,0 +1,64 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    {{- range getComplexTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+)
+
+{{ $packageName := .PackageName }}
+{{ $tree := simpleVisit .PackageName }}
+
+{{- range $index, $path := $tree.Paths}}
+{{ $lastNode := $path.LastItem }}
+{{ $lastNodeIndex := $path.LastItemIndex }}
+{{- if and (ne $lastNode.Name "_self") (not $lastNode.IsStruct) }}
+// Set_{{ $path.Identifier }}_Item funzione
+func (d*Document)  Set_{{ $path.Identifier }}(_{{ camelize $lastNode.Name }} {{if $lastNode.IsPtr}}*{{end}}{{if $lastNode.IsArray}}[]{{end}}{{$lastNode.TypeWithPackageTrimmed $packageName}}) {
+
+{{- range $index, $element := .}}
+{{- if ne $element.Name "_self" }}
+   {{- if ne $index $lastNodeIndex }}
+      {{- if $element.IsArray }}
+if len(d.{{$path.ItemPathReference $index}}) == 0 {
+    d.{{$path.ItemPathReference $index}} = append(d.{{$path.ItemPathReference $index}}, {{$element.TypeWithPackageTrimmed $packageName}}{})
+}
+     {{- end}}
+     {{- if $element.IsPtr }}
+if d.{{$path.ItemPathReference $index}} == nil {
+    d.{{$path.ItemPathReference $index}} = &{{$element.TypeWithPackageTrimmed $packageName}}{}
+}
+     {{- end}}
+   {{- else }}
+d.{{$path.ItemPathReference $index}} = _{{ camelize $element.Name }}
+   {{- end }}
+{{- end }}
+{{- end }}
+
+}
+{{- if $lastNode.IsArray}}
+func (d*Document)  Set_{{ .Identifier }}_Item(_{{ camelize $lastNode.Name }} {{if $lastNode.IsPtr}}*{{end}}{{$lastNode.TypeWithPackageTrimmed $packageName}}) {
+{{- range $index, $element := .}}
+{{- if ne $element.Name "_self" }}
+   {{- if ne $index $lastNodeIndex }}
+      {{- if $element.IsArray }}
+if len(d.{{$path.ItemPathReference $index}}) == 0 {
+    d.{{$path.ItemPathReference $index}} = append(d.{{$path.ItemPathReference $index}}, {{$element.TypeWithPackageTrimmed $packageName}}{})
+}
+     {{- end}}
+     {{- if $element.IsPtr }}
+if d.{{$path.ItemPathReference $index}} == nil {
+    d.{{$path.ItemPathReference $index}} = &{{$element.TypeWithPackageTrimmed $packageName}}{}
+}
+     {{- end}}
+   {{- else }}
+d.{{$path.ItemPathReference $index}} = append(d.{{$path.ItemPathReference $index}}, _{{ camelize $element.Name }})
+   {{- end }}
+{{- end }}
+{{- end }}
+}
+{{- end }}
+{{- end }}
+{{- end }}

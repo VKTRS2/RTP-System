@@ -1,0 +1,48 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    "{{ getImportForPackage "common" }}"
+)
+
+{{ $packageName := .PackageName }}
+{{ $tree := simpleVisit .PackageName }}
+
+{{- range $tree.Paths}}
+{{ $path := . }}
+{{ $lastNode := .LastItem }}
+{{ $lastNodeIndex := .LastItemIndex }}
+{{- if and (ne $lastNode.Name "_self") ($lastNode.IsStruct) }}
+func (d*Document)  Get_{{ .Identifier }}() {{if $lastNode.IsPtr}}*{{end}}{{if $lastNode.IsArray}}[]{{end}}{{$lastNode.TypeWithPackageTrimmed $packageName}} {
+{{- range $index, $element := .}}
+
+{{- if ne $element.Name "_self" }}
+{{- if ne $index $lastNodeIndex }}
+{{- if $element.IsArray }}
+if len(d.{{$path.ItemPathReference $index}}) == 0 {
+    {{- if or $lastNode.IsArray $lastNode.IsPtr}}
+        return nil
+    {{- else }}
+        return {{$lastNode.TypeWithPackageTrimmed $packageName}}{}
+    {{- end }}
+}
+{{- end}}
+{{- if $element.IsPtr }}
+if d.{{$path.ItemPathReference $index}} == nil {
+    {{- if or $lastNode.IsArray $lastNode.IsPtr}}
+        return nil
+    {{- else }}
+        return {{$lastNode.TypeWithPackageTrimmed $packageName}}{}
+    {{- end }}
+}
+{{- end}}
+{{- else }}
+return d.{{$path.ItemPathReference $index}}
+{{- end }}
+{{- end }}
+
+{{- end }}
+}
+{{- end }}
+{{- end }}

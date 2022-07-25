@@ -1,0 +1,18 @@
+{{ define "document-example-node" }}
+{{- if eq .Name "_self" }}
+   d := {{ .Type }} {
+{{- else }}
+   {{ .Name }}: {{- if .IsPtr }}&{{- end}}{{- if .IsArray }}[]{{- end}}
+   {{- if or .IsStruct .IsArray }} {{ .Type }} { {{- else}}{{ mustToFunctionSignature .Type }}({{ .Type }}Sample),{{- end}}
+{{- end }}
+{{- $node := . }}
+{{- if and $node.IsStruct $node.IsArray }} { {{- end}}
+{{- range .Children }}
+{{- template "document-example-node" . }}
+{{- end -}}
+{{- if and $node.IsStruct $node.IsArray }}{{ printf "}," }}{{ end}}
+{{- if and (not $node.IsStruct) $node.IsArray }}
+  {{ mustToFunctionSignature .Type }}({{ .Type }}Sample),
+{{- end -}}
+{{- if or .IsStruct .IsArray }}{{- if ne .Name "_self" }}{{ printf "\n}," }}{{- else}}{{ printf "\n}" }}{{- end}}{{ end}}
+{{- end }}

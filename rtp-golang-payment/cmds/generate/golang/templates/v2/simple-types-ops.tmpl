@@ -1,0 +1,30 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+   "fmt"
+   "regexp"
+   	"time"
+   {{- range getSimpleTypesImports .PackageName}}
+   "{{ . }}"
+   {{- end}}
+)
+
+{{- range getSimpleTypes .PackageName}}
+/*
+ * {{.Name}} Ops
+ */
+{{- if eq .Type.Builtin.String "String" }}
+{{ template "simple-types-string-ops" . }}
+{{- end}}
+{{- if eq .Type.Builtin.String "Date" }}
+{{ template "simple-types-date-ops" . }}
+{{- end}}
+{{- if eq .Type.Builtin.String "DateTime" }}
+{{ template "simple-types-datetime-ops" . }}
+{{- end}}
+{{- if eq .Type.Builtin.String "Base64Binary" }}
+{{ template "simple-types-b64-ops" . }}
+{{- end}}
+{{- end}}

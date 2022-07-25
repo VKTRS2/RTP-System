@@ -1,0 +1,13 @@
+## Package {{.PackageName}}
+
+{{- $packageName := .PackageName }}
+{{- $tree := simpleVisit .PackageName }}
+
+The list below contains the signatures of the functions that can be called on the document structure. They are listed here to facilitate the grabbing of the signature to compose the calls.
+
+{{  range $tree.Paths}}
+{{- $lastNode := .LastItem }}
+{{- if ne $lastNode.Name "_self" }}
+1. With_{{ .Identifier }}(_{{ camelize $lastNode.Name }} {{if $lastNode.IsPtr}}*{{end}}{{if $lastNode.IsArray}}[]{{end}}{{$lastNode.TypeWithPackageTrimmed $packageName}})
+{{- end }}
+{{- end }}

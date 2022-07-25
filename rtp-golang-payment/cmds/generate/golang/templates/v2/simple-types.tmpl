@@ -1,0 +1,14 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    {{- range getSimpleTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+)
+
+{{- range getSimpleTypes .PackageName}}
+// {{ .Name }} {{.Comment}}
+type {{ .Name }} {{.Type.Name}}
+{{ end}}

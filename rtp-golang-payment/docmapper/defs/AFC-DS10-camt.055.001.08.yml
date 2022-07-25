@@ -1,0 +1,96 @@
+name: AFC-DS10-camt.055.001.08
+msg-name: camt.055.001.08
+rules:
+  - name: Assgnmt_Id
+    sourcevalue: '"{$.payee-company-name}-DS10-" + objId()'
+    target-path: CstmrPmtCxlReq.Assgnmt.Id
+  - name: Assgnmt_Assgnr_Pty_Nm
+    sourcevalue: '{$.payee-company-name} {$.payee-name}'
+    target-path: CstmrPmtCxlReq.Assgnmt.Assgnr.Pty.Nm
+  - name: Assgnmt_Assgnr_Pty_Id_OrgId_Othr_Id
+    sourcevalue: '{$.payee-id}'
+    target-path: CstmrPmtCxlReq.Assgnmt.Assgnr.Pty.Id.OrgId.Othr.Id
+  - name: Assgnmt_Assgnr_Pty_Id_OrgId_Othr_SchmeNm_Cd
+    sourcevalue: BOID
+    target-path: CstmrPmtCxlReq.Assgnmt.Assgnr.Pty.Id.OrgId.Othr.SchmeNm.Cd
+  - name: Assgnmt_Assgne_Agt_FinInstnId_BICFI
+    sourcevalue: '{$.payer-psp-id}'
+    target-path: CstmrPmtCxlReq.Assgnmt.Assgne.Agt.FinInstnId.BICFI
+  - name: Assgnmt_CreDtTm
+    sourcevalue: now()
+    target-path: CstmrPmtCxlReq.Assgnmt.CreDtTm
+  - name: Undrlyg_OrgnlGrpInfAndCxl_GrpCxlId
+    sourcevalue: '{$.payee-company-name}-DS10-" + objId()'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.GrpCxlId
+  - name: Undrlyg_OrgnlGrpInfAndCxl_OrgnlMsgId
+    sourcevalue: '"{$.payee-company-name}-DS01-" + objId()'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.OrgnlMsgId
+  - name: Undrlyg_OrgnlGrpInfAndCxl_OrgnlMsgNmId
+    sourcevalue: pain.013.001.07
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.OrgnlMsgNmId
+  - name: Undrlyg_OrgnlGrpInfAndCxl_OrgnlCreDtTm
+    sourcevalue: now()
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.OrgnlCreDtTm
+  - name: Undrlyg_OrgnlGrpInfAndCxl_NbOfTxs
+    sourcevalue: "1"
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.NbOfTxs
+  - name: Undrlyg_OrgnlGrpInfAndCxl_CtrlSum
+    sourcevalue: '{$.amount}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlGrpInfAndCxl.CtrlSum
+  - name: Undrlyg_OrgnlPmtInfAndCxl_OrgnlPmtInfId
+    sourcevalue: '"F/{$.payee-e2e-rtp-ref}/P/" + rtpId()'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.OrgnlPmtInfId
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlId
+    sourcevalue: '{$.payee-company-name}-DS10-" + objId()'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlId
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlInstrId
+    sourcevalue: '{$.payee-e2e-rtp-ref}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlInstrId
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlEndToEndId
+    sourcevalue: '{$.payee-e2e-rtp-ref}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlEndToEndId
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlRsnInf_Orgtr_Nm
+    sourcevalue: '{$.payee-company-name} {$.payee-name}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlRsnInf.Orgtr.Nm
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlRsnInf_Orgtr_Id_OrgId_Othr_Id
+    sourcevalue: '{$.payee-id}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlRsnInf.Orgtr.Id.OrgId.Othr.Id
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlRsnInf_Orgtr_Id_OrgId_Othr_SchmeNm_Cd
+    sourcevalue: BOID
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlRsnInf.Orgtr.Id.OrgId.Othr.SchmeNm.Cd
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlRsnInf_Rsn_Cd
+    sourcevalue: '{$.reason-code}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlRsnInf.Rsn.Cd
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_CxlRsnInf_AddtlInf
+    sourcevalue: '{$.additional-info}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.CxlRsnInf.AddtlInf
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_Amt_InstdAmt_Ccy
+    sourcevalue: EUR
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.Amt.InstdAmt.Ccy
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_Amt_InstdAmt_Value
+    sourcevalue: '{$.amount}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.Amt.InstdAmt.Value
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_ReqdExctnDt_Dt
+    sourcevalue: '{$.pmt-req-exec-date}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.ReqdExctnDt.Dt
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_PmtTpInf_SvcLvl_Cd
+    sourcevalue: SEPA
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.PmtTpInf.SvcLvl.Cd
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_PmtTpInf_LclInstrm_Prtry
+    sourcevalue: '{$.pmt-instrument}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.PmtTpInf.LclInstrm.Prtry
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_RmtInf_Ustrd
+    sourcevalue: AT41/{$.payee-e2e-rtp-ref}/AT05/pagamento fattura
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.RmtInf.Ustrd
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_Cdtr_Pty_Nm
+    sourcevalue: '{$.payee-company-name} {$.payee_name}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.Cdtr.Pty.Nm
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_Cdtr_Pty_Id_OrgId_Othr_Id
+    sourcevalue: '{$.payee_id}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.Cdtr.Pty.Id.OrgId.Othr.Id
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_Cdtr_Pty_Id_OrgId_Othr_SchmeNm_Cd
+    sourcevalue: BOID
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.Cdtr.Pty.Id.OrgId.Othr.SchmeNm.Cd
+  - name: Undrlyg_OrgnlPmtInfAndCxl_TxInf_OrgnlTxRef_CdtrAcct_Id_IBAN
+    sourcevalue: '{$.payee-iban}'
+    target-path: CstmrPmtCxlReq.Undrlyg.OrgnlPmtInfAndCxl.TxInf.OrgnlTxRef.CdtrAcct.Id.IBAN

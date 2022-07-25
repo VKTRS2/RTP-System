@@ -1,0 +1,95 @@
+package main
+
+type PaymentOutput struct {
+	Credttm          string `json:"credit_date,omitempty"`
+	SettlementAmount string `json:"settlement_amount,omitempty"`
+	SettlementCurcy  string `json:"settlememt_currency,omitempty"`
+	Desc             string `json:"description,omitempty"`
+}
+
+AdrLine	Max70Text
+Agt	BranchAndFinancialInstitutionIdentification5
+Assgne	Party35Choice
+Assgnr	Party7Choice
+BICFI	BankIdentificationCode
+BizMsgIdr	BusinessMessageIdentifier
+BldgNb	Max16Text
+CanonicalizationMethod	CanonicalizationMethod
+CdtrAgt	BranchAndFinancialInstitutionIdentification4
+CdtTrfTxInf	CreditTransferTransactionInformation11
+ChrgBr	ChargeBearerType1Code
+ChrgsInf	ChargesInformation5
+Conf	ExternalInvestigationExecutionConfirmation1Co
+CreDt	ISONormalisedDateTime
+CreDtTm	ISODateTime
+Cretr	Party35Choice
+Ctry	CountryCode
+CxlRsnInf	CancellationReasonInformation3
+Dbtr	PartyIdentification32
+DbtrAgt	BranchAndFinancialInstitutionIdentification4
+EndToEndId	EndToEndId
+Envlp	SupplementaryDataEnvelope1
+FIId	FinancialInstitutionIdentification
+FinInstnId	FinancialInstitutionIdentification7
+FIToFICstmrCdtTrf	FIToFICustomerCreditTransferV02
+FIToFIPmtCxlReq	FIToFIPaymentCancellationRequestV01
+FIToFIPmtStsRpt	FIToFIPaymentStatusReportV03
+Fr	Party9Choice
+GrpHdr	GroupHeader33
+Id	Max35Text
+InstdAgt	BranchAndFinancialInstitutionIdentification4
+InstdAmt	ActiveOrHistoricCurrencyAndAmount
+InstgAgt	BranchAndFinancialInstitutionIdentification4
+InstrId	InstructionIdentification
+IntrBkSttlmAmt	ActiveOrHistoricCurrencyAndAmount
+IntrBkSttlmDt	InterbankSettlementDate
+Issr	Issuer
+Justfn	CaseForwardingNotification3Code
+KeyInfo	KeyInfo
+Mod	RequestedModification7
+MsgDefIdr	MessageDefinitionIdentifier
+MsgId	MessageIdentification
+MssngOrIncrrctInf	MissingOrIncorrectInformation3
+NbOfTxs	Max15NumericText
+NtfctnOfCaseAssgnmt	NotificationOfCaseAssignmentV05
+OrgnlCreDtTm	ISODateTime
+OrgnlEndToEndId	OriginalEndToEndIdentification
+OrgnlGrpInf	OriginalGroupInformation3
+OrgnlGrpInfAndCxl	OriginalGroupInformation23
+OrgnlGrpInfAndSts	OriginalGroupInformation20
+OrgnlInstdAmt	OriginalInstructedAmount
+OrgnlInstrId	OriginalInstructionIdentification
+OrgnlIntrBkSttlmAmt	ActiveOrHistoricCurrencyAndAmount
+OrgnlMsgId	OriginalMessageIdentification
+OrgnlMsgNmId	OriginalMessageNameIdentification
+OrgnlTxId	OriginalTransactionIdentification
+OrgnlTxRef	OriginalTransactionReference13
+Orgtr	PartyIdentification32
+PlcAndNm	PlcAndNm
+PmtTpInf	PaymentTypeInformation21
+PstCd	Max16Text
+PstlAdr	PostalAddress6
+ReqToModfyPmt	RequestToModifyPaymentV05
+RsltnOfInvstgtn	ResolutionOfInvestigationV08
+RtrdInstdAmt	ActiveOrHistoricCurrencyAndAmount
+RtrdIntrBkSttlmAmt	ActiveCurrencyAndAmount
+RtrId	Max35Text
+RtrRsnInf	ReturnReasonInformation9
+Signature	Signature
+SignatureMethod	SignatureMethod
+SplmtryData	SupplementaryData1
+StrtNm	Max70Text
+SttlmAcct	CashAccount16
+SttlmInf	SettlementInformation13
+SttlmMtd	SettlementMethod1Code
+SvcLvl	ServiceLevel8Choice
+To	Party9Choice
+TwnNm	Max35Text
+TxId	TransactionIdentification
+TxInfAndSts	PaymentTransactionInformation26
+TxSts	TransactionIndividualStatus3Code
+UblToApply	UnableToApplyV07
+UltmtCdtr	PartyIdentification32
+Undrlyg	UnderlyingTransaction4Choice
+X509Data	KeyInfoX509Data
+XchgRate	BaseOneRate

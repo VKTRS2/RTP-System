@@ -1,0 +1,16 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+{{ $tree := simpleVisit .PackageName }}
+const (
+{{- range $tree.Paths}}
+  {{- $lastNode := .LastItem }}
+  {{- if ne $lastNode.Name "_self" }}
+  Path_{{ .Identifier }} = "{{.Value}}"
+  {{- if $lastNode.IsArray }}
+  Path_{{ .Identifier }}_Item = "{{.Value}}/Item"
+  {{- end }}
+  {{- end }}
+{{- end }}
+)

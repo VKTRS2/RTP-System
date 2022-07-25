@@ -1,0 +1,31 @@
+// Package {{.PackageName}}_test
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}_test
+
+import (
+    "{{ getImportForPackage .PackageName }}"
+    "testing"
+    "github.com/stretchr/testify/require"
+    "io/fs"
+    "io/ioutil"
+     "os"
+
+    {{- range getComplexTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+)
+
+const Example_{{.PackageName}} = "example-document-{{.PackageName}}.xml"
+
+func TestDocument{{.PackageName}}(t *testing.T) {
+   {{ $tree := treeVisit .PackageName }}
+   {{ template "document-example-node" $tree.Root }}
+
+   	b, err := d.ToXML()
+   	require.NoError(t, err)
+
+   	err = ioutil.WriteFile(Example_{{.PackageName}}, b, fs.ModePerm)
+   	require.NoError(t, err)
+   	defer os.Remove(Example_{{.PackageName}})
+
+}

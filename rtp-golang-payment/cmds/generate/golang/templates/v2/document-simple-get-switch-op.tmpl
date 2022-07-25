@@ -1,0 +1,27 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    "fmt"
+)
+
+{{ $packageName := .PackageName }}
+{{ $tree := simpleVisit .PackageName }}
+
+func (d*Document)  Get(docPath string) (interface{}, error) {
+  switch docPath {
+{{- range $tree.Paths}}
+{{ $lastNode := .LastItem }}
+{{- if and (ne $lastNode.Name "_self") (not $lastNode.IsStruct) }}
+  case Path_{{ .Identifier }}:
+  		return d.Get_{{ .Identifier }}{{- if $lastNode.IsArray}}_Item{{- end}}(), nil
+{{- end }}
+{{- end }}
+   default:
+        return nil, fmt.Errorf("could not find path to node %s", docPath)
+ }
+
+ return nil, nil
+}
+

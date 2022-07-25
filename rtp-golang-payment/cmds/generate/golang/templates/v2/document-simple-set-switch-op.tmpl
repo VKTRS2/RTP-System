@@ -1,0 +1,34 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+    {{- range getComplexTypesImports .PackageName}}
+    "{{ . }}"
+    {{- end}}
+    "fmt"
+)
+
+{{ $packageName := .PackageName }}
+{{ $tree := simpleVisit .PackageName }}
+
+func (d*Document)  Set(docPath string, item interface{}) error {
+  switch docPath {
+{{- range $tree.Paths}}
+{{ $lastNode := .LastItem }}
+{{- if and (ne $lastNode.Name "_self") (not $lastNode.IsStruct) }}
+  case Path_{{ .Identifier }}:
+  		v, err := {{$lastNode.NameOfTypeFunction "To" $packageName }}(item)
+  		if err == nil {
+  			d.Set_{{ .Identifier }}{{- if $lastNode.IsArray}}_Item{{- end}}(v)
+  		}
+  		return err
+{{- end }}
+{{- end }}
+   default:
+        return fmt.Errorf("could not find path to node %s", docPath)
+ }
+
+ return nil
+}
+

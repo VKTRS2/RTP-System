@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02 ">
+    <FIToFICstmrCdtTrf>
+        <GrpHdr>
+            <MsgId>Message ID</MsgId>
+            <CreDtTm>2019-12-23T09:40:13</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <TtlIntrBkSttlmAmt Ccy="EUR">1</TtlIntrBkSttlmAmt>
+            <IntrBkSttlmDt>2019-12-23</IntrBkSttlmDt>
+            <SttlmInf>
+                <SttlmMtd>CLRG</SttlmMtd>
+                <ClrSys>
+                    <Prtry>ST2</Prtry>
+                </ClrSys>
+            </SttlmInf>
+            <InstgAgt>
+                <FinInstnId>
+                    <BIC>INGSMMXXX</BIC>
+                </FinInstnId>
+            </InstgAgt>
+            <InstdAgt>
+                <FinInstnId>
+                    <BIC>BTRLRO22</BIC>
+                </FinInstnId>
+            </InstdAgt>
+        </GrpHdr>
+        <CdtTrfTxInf>
+            <PmtId>
+                <InstrId>PaymentID</InstrId>
+                <EndToEndId>PaymentID</EndToEndId>
+                <TxId>PaymentID</TxId>
+            </PmtId>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <IntrBkSttlmAmt Ccy="EUR">1</IntrBkSttlmAmt>
+            <ChrgBr>SLEV</ChrgBr>
+            <Dbtr>
+                <Nm>Jane Doe</Nm>
+                <PstlAdr>
+                    <Ctry>ES</Ctry>
+                </PstlAdr>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>GFA</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <IBAN>RO10INGBCBN4EVKBNFJ8YNGT</IBAN>
+                </Id>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>CECAESMMXXX</BIC>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtrAgt>
+                <FinInstnId>
+                    <BIC>BTRLRO22</BIC>
+                </FinInstnId>
+            </CdtrAgt>
+            <Cdtr>
+                <Nm>John Doe</Nm>
+                <PstlAdr>
+                    <Ctry>ES</Ctry>
+                </PstlAdr>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>V94025590</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </Cdtr>
+            <CdtrAcct>
+                <Id>
+                    <IBAN>RO71BTRLV67M9G4XI3IEJ5D2</IBAN>
+                </Id>
+            </CdtrAcct>
+            <RmtInf>
+                <Ustrd>Incoming Payment</Ustrd>
+            </RmtInf>
+        </CdtTrfTxInf>
+    </FIToFICstmrCdtTrf>
+</Document>
